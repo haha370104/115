@@ -125,7 +125,7 @@ class pan_115:
                 's': self.session_id,
                 '_t': str(int(time.time() * 1000)),
             }
-            r = self.session.get(url=url, params=params)
+            self._get_request(url, params, json_flag=False)
             time.sleep(60)
 
     def get_user_info(self):
@@ -137,7 +137,7 @@ class pan_115:
             'is_ssl': '1',
             '_' + str(int(time.time() * 1000)): '',
         }
-        uinfos = json.loads(self.session.get(url=url, params=params).text)
+        uinfos = self._get_request(url, params)
         self.userid = uinfos['data']['USER_ID']
 
         print("====================")
@@ -152,7 +152,7 @@ class pan_115:
                 'sign': self.tsign,
                 'time': self.ttime,
             }
-            response_json = json.loads(self.session.post(url=url, data=data).text)
+            response_json = self._post_request(url, data)
             quota = response_json['quota']
             total = response_json['total']
             print(u"本月离线配额：" + str(quota) + u"个，总共" + str(total) + u"个。")
@@ -168,9 +168,7 @@ class pan_115:
             'sign': self.tsign,
             'time': self.ttime
         }
-        text = self.session.post(url, data).text
-        response_json = json.loads(text)
-        print(text)
+        response_json = self._post_request(url, data)
         if (response_json.get('errcode') == 0):
             return [True, '下载成功']
         else:
@@ -184,7 +182,7 @@ class pan_115:
             'sign': self.tsign,
             'time': self.ttime
         }
-        response_json = json.loads(self.session.post(url, data).text)
+        response_json = self._post_request(url, data)
         print(json.dumps(response_json))
         return response_json.get('tasks')
 
@@ -206,7 +204,7 @@ class pan_115:
             'format': 'json',
             'type': type
         }
-        response_json = json.loads(self.session.get(url, params=params).text)
+        response_json = self._get_request(url, params)
         print(json.dumps(response_json))
         return response_json.get('data')
 
@@ -216,7 +214,7 @@ class pan_115:
             'pickcode': pick_code,
             '_': str(int(time.time() * 1000))
         }
-        response_json = json.loads(self.session.get(url, params=params).text)
+        response_json = self._get_request(url, params)
         print(json.dumps(response_json))
         return response_json
 
