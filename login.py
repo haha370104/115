@@ -73,7 +73,7 @@ class pan_115:
 
     def wait_login(self):
         while True:
-            url = 'http://im37.115.com/chat/r'
+            url = 'http://im3.115.com/chat/r'
             params = {
                 'VER': '2',
                 'c': 'b0',
@@ -218,14 +218,14 @@ class pan_115:
         print(json.dumps(response_json))
         return response_json
 
-
-test = pan_115()
-test.get_code()
-test.wait_login()
-test.login()
-threading.Thread(target=test.keep_login)
-test.get_user_info()
-test.get_task_list(1)
-test.get_task_list(2)
-test.get_task_list(3)
-test.get_files_by_cid()
+if __name__ == '__main__':
+    test = pan_115()
+    test.get_code()
+    test.wait_login()
+    test.login()
+    threading.Thread(target=test.keep_login).start()
+    test.get_user_info()
+    test.get_task_list(1)
+    test.get_task_list(2)
+    test.get_task_list(3)
+    test.get_files_by_cid()
